@@ -82,7 +82,7 @@ void receptionDonneeESPNOW(const uint8_t * mac, const uint8_t *incomingData, int
   couleur.b = messageRecu.B;
   
   if(messageRecu.fonction == 0){
-    allumerCarre(carres[messageRecu.col][messageRecu.ligne], couleur);
+    allumerCarre(carres[messageRecu.ligne][messageRecu.col], couleur);
     FastLED.show();
     //Serial.println((String) "Carre " + messageRecu.col + ":" + messageRecu.ligne + " => " + couleur.r + " " + couleur.g + " " + couleur.b);
   }

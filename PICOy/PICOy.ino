@@ -42,8 +42,11 @@ espnow_msg messageRecu;
 // Tableau de carré
 carre carres[8][8] = {};
 
+// Position des LED inversées
+// Exemple : 0 pour des LED 0 à 149
+short ledInverses[] = {0, 2249};
+
 // Lignes inversées - différentes de ORDRE_LED (RGB / GRB)
-// (Non implémenté pour l'instant)
 short lignesInverses[] = {1, 16};
 
 CRGB rawleds[LIGNES * LED_PAR_LIGNE];
@@ -75,7 +78,9 @@ void loop() {
 
 void receptionDonneeESPNOW(const uint8_t * mac, const uint8_t *incomingData, int len) {
   memcpy(&messageRecu, incomingData, sizeof(messageRecu));
-
+  messageRecu.ligne -= 1;
+  messageRecu.col -= 1;
+  
   CRGB couleur = CRGB::Black;
   couleur.r = messageRecu.R;
   couleur.g = messageRecu.G;
@@ -84,7 +89,6 @@ void receptionDonneeESPNOW(const uint8_t * mac, const uint8_t *incomingData, int
   if(messageRecu.fonction == 0){
     allumerCarre(carres[messageRecu.ligne][messageRecu.col], couleur);
     FastLED.show();
-    //Serial.println((String) "Carre " + messageRecu.col + ":" + messageRecu.ligne + " => " + couleur.r + " " + couleur.g + " " + couleur.b);
   }
 }
 
@@ -132,8 +136,6 @@ void initialisationPositionCarres() {
 }
 
 void ajouterNouvelleFixture(short posx, short posy, short tmpPosLED) {
-  //Serial.println((String)"x:" + posx + " y:" + posy + " LED:" + tmpPosLED + " sur la pos:" +carres[posx][posy].pos);
-
   switch (carres[posx][posy].pos) {
     case 1:
       carres[posx][posy].f3 = tmpPosLED;
@@ -160,22 +162,36 @@ void allumerCarre(carre leCarre, CRGB couleur){
 }
 
 void allumerFixture(carre leCarre, short numeroFixture, CRGB couleur) {
-  //Generer un set pour la fixture
+  short posDebut = 0;
+  short posFin = 0;
+
+  // Recuperer la bonne position de LED en fonction de la fixture
   if (numeroFixture == 1) {
-    CRGBSet fixture(leds(leCarre.f3, leCarre.f3 + LARGEUR_FIXTURE));
-    fill_solid(fixture, LARGEUR_FIXTURE, couleur);
-  } else {
-    if (numeroFixture == 2) {
-      CRGBSet fixture(leds(leCarre.f4, leCarre.f4 + LARGEUR_FIXTURE));
-      fill_solid(fixture, LARGEUR_FIXTURE, couleur);
-    } else {
-      if (numeroFixture == 3) {
-        CRGBSet fixture(leds(leCarre.f7, leCarre.f7 + LARGEUR_FIXTURE));
-        fill_solid(fixture, LARGEUR_FIXTURE, couleur);
-      } else {
-         CRGBSet fixture(leds(leCarre.f8, leCarre.f8 + LARGEUR_FIXTURE));
-         fill_solid(fixture, LARGEUR_FIXTURE, couleur);
-      }
+    posDebut = leCarre.f3;
+    posFin = leCarre.f3 + LARGEUR_FIXTURE;
+  }
+  if (numeroFixture == 2) {
+    posDebut = leCarre.f4;
+    posFin = leCarre.f4 + LARGEUR_FIXTURE;
+  }
+  if (numeroFixture == 3) {
+    posDebut = leCarre.f7;
+    posFin = leCarre.f7 + LARGEUR_FIXTURE;
+  }
+  if (numeroFixture == 4) {
+    posDebut = leCarre.f8;
+    posFin = leCarre.f8 + LARGEUR_FIXTURE;
+  }
+
+  // Cas des inversion de couleurs
+  for(int pos=0; pos < sizeof ledInverses/sizeof ledInverses[0]; pos++) {
+    if(posDebut >= ledInverses[pos] && posDebut <= ledInverses[pos] + LED_PAR_LIGNE){
+      int tmpR = couleur.r;
+      couleur.r = couleur.g;
+      couleur.g = tmpR;
     }
   }
+
+  CRGBSet fixture(leds(posDebut, posFin));
+  fill_solid(fixture, LARGEUR_FIXTURE, couleur);
 }

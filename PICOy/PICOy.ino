@@ -15,23 +15,23 @@
 
 ////////////////////////////////////
 
-// Un carré, avec ses fixtures verticales 8, 7, 4 et 3
+// Structure de fixture
+struct fixture {
+  short rang;
+  short r;
+  short g;
+  short b;
+};
+
+// Un carré, avec ses fixtures horizontales 1, 2, 5 et 6
 struct carre {
-  short f8 = 0;
-  short f7 = 0;
-  short f4 = 0;
-  short f3 = 0;
-  short pos = 1;
+  fixture fixtures[4];
+  short pos = 0;
 };
 
 // Structure d'un message reçu via ESP-NOW
 typedef struct espnow_msg {
-  byte col;
-  byte ligne;
-  byte fixture;
-  byte R;
-  byte G;
-  byte B;
+  carre matrice[8][8];
   byte intensite;
   byte fonction;
 } espnow_msg;
@@ -40,7 +40,7 @@ typedef struct espnow_msg {
 espnow_msg messageRecu;
 
 // Tableau de carré
-carre carres[8][8] = {};
+carre matrice[8][8] = {};
 
 // Position des LED inversées
 // Exemple : 0 pour des LED 0 à 149
@@ -59,7 +59,7 @@ void setup() {
   FastLED.addLeds<CHIPSET, DATA_PIN, ORDRE_LED>(leds, LIGNES * LED_PAR_LIGNE);
   FastLED.clear();
   FastLED.setBrightness(BRIGHTNESS);
-  initialisationPositionCarres();
+  initialisationPositionmatrice();
 
   // Ecouter en ESP-NOW
   // Mode "Wifi station" et initialisation
@@ -70,30 +70,32 @@ void setup() {
   }
   
   // On se prépare à recevoir une trame
-  esp_now_register_recv_cb(receptionDonneeESPNOW);
+  esp_now_register_recv_cb(majMatrice);
 }
 
 void loop() {
 }
 
-void receptionDonneeESPNOW(const uint8_t * mac, const uint8_t *incomingData, int len) {
+void majMatrice(const uint8_t * mac, const uint8_t *incomingData, int len) {
   memcpy(&messageRecu, incomingData, sizeof(messageRecu));
-  messageRecu.ligne -= 1;
-  messageRecu.col -= 1;
-  
-  CRGB couleur = CRGB::Black;
-  couleur.r = messageRecu.R;
-  couleur.g = messageRecu.G;
-  couleur.b = messageRecu.B;
-  
-  if(messageRecu.fonction == 0){
-    allumerCarre(carres[messageRecu.ligne][messageRecu.col], couleur);
-    FastLED.show();
+
+  for(short y = 0; y < 8; y++){
+    for(short x = 0; x < 8; x++){
+      for(short f = 0; f <4; f++){
+        matrice[x][y].fixtures[f].r = messageRecu.matrice[x][y].fixtures[f].r;
+        matrice[x][y].fixtures[f].g = messageRecu.matrice[x][y].fixtures[f].g;
+        matrice[x][y].fixtures[f].b = messageRecu.matrice[x][y].fixtures[f].b;
+      }
+    }
   }
+
+  afficherMatrice();
+ 
+  FastLED.show();
 }
 
-// Fonction qui initialise tous les carres et leurs fixtures respectives
-void initialisationPositionCarres() {
+// Fonction qui initialise tous les matrice et leurs fixtures respectives
+void initialisationPositionmatrice() {
   short posx = 0; //Pos X du carré en cours
   short posy = 0; //Pos Y du carré en cours
   short posFixture = 0; //Incrémente à chaque fixture
@@ -136,62 +138,42 @@ void initialisationPositionCarres() {
 }
 
 void ajouterNouvelleFixture(short posx, short posy, short tmpPosLED) {
-  switch (carres[posx][posy].pos) {
-    case 1:
-      carres[posx][posy].f3 = tmpPosLED;
-      break;
-    case 2:
-      carres[posx][posy].f4 = tmpPosLED;
-      break;
-    case 3:
-      carres[posx][posy].f7 = tmpPosLED;
-      break;
-    case 4:
-      carres[posx][posy].f8 = tmpPosLED;
-      break;
-  }
-
-  carres[posx][posy].pos++;
+  fixture maFixture = {0,0,0,0};
+  maFixture.rang = tmpPosLED;
+  matrice[posx][posy].fixtures[matrice[posx][posy].pos] = maFixture;
+  matrice[posx][posy].pos++;
 }
 
-void allumerCarre(carre leCarre, CRGB couleur){
-  allumerFixture(leCarre, 1, couleur);
-  allumerFixture(leCarre, 2, couleur);
-  allumerFixture(leCarre, 3, couleur);
-  allumerFixture(leCarre, 4, couleur);
-}
-
-void allumerFixture(carre leCarre, short numeroFixture, CRGB couleur) {
+void afficherMatrice(){
   short posDebut = 0;
   short posFin = 0;
 
-  // Recuperer la bonne position de LED en fonction de la fixture
-  if (numeroFixture == 1) {
-    posDebut = leCarre.f3;
-    posFin = leCarre.f3 + LARGEUR_FIXTURE;
-  }
-  if (numeroFixture == 2) {
-    posDebut = leCarre.f4;
-    posFin = leCarre.f4 + LARGEUR_FIXTURE;
-  }
-  if (numeroFixture == 3) {
-    posDebut = leCarre.f7;
-    posFin = leCarre.f7 + LARGEUR_FIXTURE;
-  }
-  if (numeroFixture == 4) {
-    posDebut = leCarre.f8;
-    posFin = leCarre.f8 + LARGEUR_FIXTURE;
-  }
+  CRGB couleur = CRGB::Black;
 
-  // Cas des inversion de couleurs
-  for(int pos=0; pos < sizeof ledInverses/sizeof ledInverses[0]; pos++) {
-    if(posDebut >= ledInverses[pos] && posDebut <= ledInverses[pos] + LED_PAR_LIGNE){
-      int tmpR = couleur.r;
-      couleur.r = couleur.g;
-      couleur.g = tmpR;
+  for(short y = 0; y < 8; y++){
+    for(short x = 0; x < 8; x++){
+      for(short f = 0; f <4; f++){
+
+        //Determiner la couleur
+        couleur.r = matrice[x][y].fixtures[f].r;
+        couleur.g = matrice[x][y].fixtures[f].g;
+        couleur.b = matrice[x][y].fixtures[f].b;
+
+        // Cas des inversion de couleurs
+        for(int pos=0; pos < sizeof ledInverses/sizeof ledInverses[0]; pos++) {
+          if(posDebut >= ledInverses[pos] && posDebut <= ledInverses[pos] + LED_PAR_LIGNE){
+            int tmpR = couleur.r;
+            couleur.r = couleur.g;
+            couleur.g = tmpR;
+          }
+        }
+  
+        posDebut = matrice[x][y].fixtures[f].rang;
+        posFin = matrice[x][y].fixtures[f].rang + LARGEUR_FIXTURE;
+
+        CRGBSet fixture(leds(posDebut, posFin));
+        fill_solid(fixture, LARGEUR_FIXTURE, couleur);
+      }
     }
   }
-
-  CRGBSet fixture(leds(posDebut, posFin));
-  fill_solid(fixture, LARGEUR_FIXTURE, couleur);
 }

@@ -6,9 +6,8 @@
 #include <esp_now.h>
 #include <WiFi.h>
 
-// Actualisation de 75ms MINIMUM,
-// show() à 13hz pour ~2400 LED
-#define MIN_REFRESH_TIME 75
+// Actualisation de 50ms minimum
+#define MIN_REFRESH_TIME 50
 #define CASES 8
 
 // REPLACE WITH YOUR RECEIVER MAC Address
@@ -16,21 +15,29 @@ uint8_t PICOxAddress[] = {0xD8, 0xA0, 0x1D, 0x47, 0x70, 0x18};
 uint8_t PICOyAddress[] = {0x50, 0x02, 0x91, 0x86, 0x88, 0xA0};
 uint8_t PICO3Address[] = {0x50, 0x02, 0x91, 0x86, 0x88, 0xF0};
 
-// Structure example to send data
-// Must match the receiver structure
+// Structure de fixture
+struct fixture {
+  short rang;
+  short r;
+  short g;
+  short b;
+};
+
+// Un carré, avec ses fixtures horizontales 1, 2, 5 et 6
+struct carre {
+  fixture fixtures[4];
+  short pos = 0;
+};
+
+// Structure d'un message reçu via ESP-NOW
 typedef struct struct_message {
-  byte col;
-  byte ligne;
-  byte fixture;
-  byte R;
-  byte G;
-  byte B;
+  carre matrice[8][8];
   byte intensite;
   byte fonction;
 } struct_message;
 
-// Create a struct_message called myData
-struct_message myData;
+// Create a struct_message called 
+struct_message espnow_msg;
 
 esp_now_peer_info_t peerInfo;
 
@@ -71,24 +78,61 @@ void setup() {
 }
 
 void loop() {
-  blackAllGrid();
-  randomOfGrid(64);
-  delay(500);
+  blueMatrice();
+  delay(1000);
+  blackMatrice();
+  delay(1000);
+}
+
+void blueMatrice(){
+  for(short y = 0; y < 8; y++){
+    for(short x = 0; x < 8; x++){
+      for(short f = 0; f <4; f++){
+        espnow_msg.matrice[x][y].fixtures[f].r = 0;
+        espnow_msg.matrice[x][y].fixtures[f].g = 0;
+        espnow_msg.matrice[x][y].fixtures[f].b = 255;
+      }
+    }
+  }
+  esp_now_send(0, (uint8_t *) &espnow_msg, sizeof(espnow_msg));
+}
+
+void blackMatrice(){
+  for(short y = 0; y < 8; y++){
+    for(short x = 0; x < 8; x++){
+      for(short f = 0; f <4; f++){
+        espnow_msg.matrice[x][y].fixtures[f].r = 0;
+        espnow_msg.matrice[x][y].fixtures[f].g = 0;
+        espnow_msg.matrice[x][y].fixtures[f].b = 0;
+      }
+    }
+  }
+  esp_now_send(0, (uint8_t *) &espnow_msg, sizeof(espnow_msg));
+}
+
+/*
+void caseMusicale(int nbJoueurs){
+  for(int i = nbJoueurs; i > 0; i--){
+    blackAllGrid();
+    delay(3000);
+    randomOfGrid(i);
+    delay(5000);
+  }
 }
 
 void whiteAllGrid() {
   for (int i = 1; i <= CASES; i++) {
     for (int j = 1; j <= CASES; j++) {
-      myData.col = j;
-      myData.ligne = i;
-      myData.fixture = 1;
-      myData.R = 255;
-      myData.G = 255;
-      myData.B = 255;
-      myData.intensite = 255;
-      myData.fonction = 0;
+      espnow_msg.col = j;
+      espnow_msg.ligne = i;
+      espnow_msg.fixture = 1;
+      espnow_msg.R = 255;
+      espnow_msg.G = 255;
+      espnow_msg.B = 255;
+      espnow_msg.intensite = 255;
+      espnow_msg.fonction = 0;
       // Send message via ESP-NOW
-      esp_err_t result = esp_now_send(0, (uint8_t *) &myData, sizeof(myData));
+      esp_err_t result = esp_now_send(0, (uint8_t *) &espnow_msg, sizeof(espnow_msg));
       delay(MIN_REFRESH_TIME);
     }
   }
@@ -136,19 +180,18 @@ void randomOfGrid(short nCasesAleatoires) {
         break;
     }
 
-    myData.col = x;
-    myData.ligne = y;
-    myData.fixture = 1;
-    myData.R = 0;
-    myData.G = 204;
-    myData.B = 102;
-    myData.intensite = 255;
-    myData.fonction = 0;
+    espnow_msg.col = x;
+    espnow_msg.ligne = y;
+    espnow_msg.fixture = 1;
+    espnow_msg.R = 0;
+    espnow_msg.G = 0;
+    espnow_msg.B = 255;
+    espnow_msg.intensite = 255;
+    espnow_msg.fonction = 0;
 
     // Send message via ESP-NOW
     casesFaites[x][y] = true;
-    esp_err_t result = esp_now_send(0, (uint8_t *) &myData, sizeof(myData));
-    delay(500);
+    esp_err_t result = esp_now_send(0, (uint8_t *) &espnow_msg, sizeof(espnow_msg));
   }
 }
 
@@ -179,16 +222,16 @@ void rgbAllGrid() {
           break;
       }
 
-      myData.col = j;
-      myData.ligne = i;
-      myData.fixture = 1;
-      myData.R = r;
-      myData.G = g;
-      myData.B = b;
-      myData.intensite = 255;
-      myData.fonction = 0;
+      espnow_msg.col = j;
+      espnow_msg.ligne = i;
+      espnow_msg.fixture = 1;
+      espnow_msg.R = r;
+      espnow_msg.G = g;
+      espnow_msg.B = b;
+      espnow_msg.intensite = 255;
+      espnow_msg.fonction = 0;
       // Send message via ESP-NOW
-      esp_err_t result = esp_now_send(0, (uint8_t *) &myData, sizeof(myData));
+      esp_err_t result = esp_now_send(0, (uint8_t *) &espnow_msg, sizeof(espnow_msg));
       delay(MIN_REFRESH_TIME);
     }
   }
@@ -197,29 +240,17 @@ void rgbAllGrid() {
 void blackAllGrid() {
   for (int i = 1; i <= CASES; i++) {
     for (int j = 1; j <= CASES; j++) {
-      myData.col = j;
-      myData.ligne = i;
-      myData.fixture = 1;
-      myData.R = 0;
-      myData.G = 0;
-      myData.B = 0;
-      myData.intensite = 0;
-      myData.fonction = 0;
+      espnow_msg.col = j;
+      espnow_msg.ligne = i;
+      espnow_msg.fixture = 1;
+      espnow_msg.R = 0;
+      espnow_msg.G = 0;
+      espnow_msg.B = 0;
+      espnow_msg.intensite = 0;
+      espnow_msg.fonction = 0;
       // Send message via ESP-NOW
-      esp_err_t result = esp_now_send(0, (uint8_t *) &myData, sizeof(myData));
+      esp_err_t result = esp_now_send(0, (uint8_t *) &espnow_msg, sizeof(espnow_msg));
       delay(MIN_REFRESH_TIME);
     }
   }
-
-}
-
-void afficheTableau() {
-  Serial.println(myData.col);
-  Serial.println(myData.ligne);
-  Serial.println(myData.fixture);
-  Serial.println(myData.R);
-  Serial.println(myData.G);
-  Serial.println(myData.B);
-  Serial.println(myData.intensite);
-  Serial.println(myData.fonction);
-}
+}*/

@@ -1,0 +1,88 @@
+{
+  "name": "Matrice OSC",
+  "type": "OSC",
+  "path": "Hardware",
+  "version": "1.0.0",
+  "description": "Controle Matrice X33D200",
+  "url": "https://github.com/tommag/Sample-Chataigne-module",
+  "downloadURL": "https://github.com/tommag/Sample-Chataigne-module/archive/master.zip",
+  "hasInput": true,
+  "hasOutput": true,
+  "hideDefaultCommands": false,
+  "defaults": {
+    "autoAdd": false,
+    "oscInput": {
+      "localPort": 9001
+    }
+  },
+  "parameters": {
+    "Size X": {
+      "type": "Integer",
+      "default": 8
+    },
+    "Size Y": {
+      "type": "Integer",
+      "default": 8
+    }
+  },
+  "scripts": [
+    "matrice.js"
+  ],
+  "commands": {
+    "Allumer fixture": {
+      "menu": "",
+      "callback": "lightFixture",
+      "parameters": {
+        "X": {
+          "type": "Integer",
+          "default": 1
+        },
+        "Y": {
+          "type": "Integer",
+          "default": 1
+        },
+        "F": {
+          "type": "Integer",
+          "min": 1,
+          "max": 8,
+          "default": 1
+        },
+        "Couleur": {
+          "type": "Color"
+        }
+      }
+    },
+    "Allumer carré": {
+      "menu": "",
+      "callback": "lightSquare",
+      "parameters": {
+        "X": {
+          "type": "Integer",
+          "default": 1
+        },
+        "Y": {
+          "type": "Integer",
+          "default": 1
+        },
+        "Couleur": {
+          "type": "Color"
+        }
+      }
+    },
+    "Allumer matrice": {
+      "menu": "",
+      "callback": "lightMatrix",
+      "parameters": {
+        "Couleur": {
+          "type": "Color"
+        }
+      }
+    },
+    "Nettoyer": {
+      "menu": "",
+      "callback": "clear",
+      "parameters": {
+      }
+    }
+  }
+}

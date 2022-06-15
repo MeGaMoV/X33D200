@@ -1,0 +1,46 @@
+function onReceiveOSC(msg)
+  local address = msg[1]
+
+  -- Case of receiving a single square
+  if(address:sub(0,6) == '/carre') then
+    local carre = address:sub(7)
+    for f = 1, 8 do
+      local fixture = self:findByName("/fixture" .. carre .. "/".. f)
+      if exist(fixture) then
+        fixture.color = getColor(msg)
+      end
+    end
+  end
+  
+  -- Case of receiving a single fixture
+  if(address:sub(0,8) == '/fixture') then
+    local fixture = self:findByName(address)
+    if exist(fixture) then
+      self:findByName(address).color = getColor(msg)
+    end
+  end
+  
+  -- Case of receiving a clear request
+  if(address:sub(0,8) == '/clear') then
+    for y = 1, 8 do
+      for x = 1, 8 do
+        for f = 1, 8 do
+         local fixture = self:findByName("/fixture/" .. x .. "/" .. y .. "/".. f)
+         if exist(fixture) then
+          fixture.color = "000000FF"
+          end
+        end
+      end
+    end
+  end
+end
+
+-- Convert decimal value to Hexa
+function getColor(msg)
+  return string.format("%02X",msg[2][1].value) .. string.format("%02X",msg[2][2].value) .. string.format("%02X",msg[2][3].value) .. "FF"
+end
+
+-- Test if the variable exist
+function exist(variable)
+  return variable ~= nil and variable ~= ''
+end

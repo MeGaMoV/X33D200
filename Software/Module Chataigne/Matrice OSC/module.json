@@ -29,9 +29,9 @@
     "matrice.js"
   ],
   "commands": {
-    "Allumer fixture": {
+    "Fixture": {
       "menu": "",
-      "callback": "lightFixture",
+      "callback": "fixture",
       "parameters": {
         "X": {
           "type": "Integer",
@@ -52,9 +52,9 @@
         }
       }
     },
-    "Allumer carré": {
+    "Carré": {
       "menu": "",
-      "callback": "lightSquare",
+      "callback": "square",
       "parameters": {
         "X": {
           "type": "Integer",
@@ -69,10 +69,50 @@
         }
       }
     },
-    "Allumer matrice": {
+    "Matrice": {
       "menu": "",
-      "callback": "lightMatrix",
+      "callback": "matrix",
       "parameters": {
+        "Couleur": {
+          "type": "Color"
+        }
+      }
+    },
+    "Intersection": {
+      "menu": "",
+      "callback": "intersection",
+      "parameters": {
+        "X1": {
+          "type": "Integer",
+          "default": 1
+        },
+        "Y1": {
+          "type": "Integer",
+          "default": 1
+        },
+        "X2": {
+          "type": "Integer",
+          "default": 1
+        },
+        "Y2": {
+          "type": "Integer",
+          "default": 1
+        },
+        "Couleur": {
+          "type": "Color"
+        }
+      }
+    },
+    "Spirale": {
+      "menu": "",
+      "callback": "spirale",
+      "parameters": {
+        "Taille": {
+          "type": "Integer",
+          "min": 1,
+          "max": 4,
+          "default": 4
+        },
         "Couleur": {
           "type": "Color"
         }
@@ -80,8 +120,20 @@
     },
     "Nettoyer": {
       "menu": "",
-      "callback": "clear",
+      "callback": "sendClear",
       "parameters": {
+      }
+    },
+    "Intensité": {
+      "menu": "",
+      "callback": "sendIntensity",
+      "parameters": {
+        "Intensite": {
+          "type": "Integer",
+          "min": 0,
+          "max": 100,
+          "default": 100
+        }
       }
     }
   }

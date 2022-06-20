@@ -20,6 +20,14 @@ function onReceiveOSC(msg)
     end
   end
   
+  -- Case of receiving a side of the Matrix
+  if(address:sub(0,5) == '/cote') then
+    local side = address:sub(0,7)
+    if exist(side) then
+      self:findByName(side).color = getColor(msg)
+    end
+  end
+  
   -- Case of receiving a clear request
   if(address:sub(0,8) == '/clear') then
     for y = 1, 8 do

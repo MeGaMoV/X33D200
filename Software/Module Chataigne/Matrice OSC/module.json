@@ -78,6 +78,19 @@
         }
       }
     },
+    "Côté": {
+      "menu": "",
+      "callback": "side",
+      "parameters": {
+        "Côté": {
+          "type": "Integer",
+          "default": 1
+        },
+        "Couleur": {
+          "type": "Color"
+        }
+      }
+    },
     "Intersection": {
       "menu": "",
       "callback": "intersection",

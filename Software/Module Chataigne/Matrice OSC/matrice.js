@@ -28,6 +28,14 @@ function sendSquare(x,y,color) {
 }
 
 /*
+  Function used to send 1 update to 1 "face" of the Matrix
+*/
+function sendSide(s,color) {
+  color = colorFloatToInt(color);
+  local.send("/cote/"+s+"", color.r, color.g, color.b);
+}
+
+/*
   Print function, because the Hardware is slow, updates / LED's changes are updated by this function.
   So you can send hundred of requests, and THEN apply with this print
   ref : https://www.reddit.com/r/FastLED/comments/aqlb94/troubleshooting_slow_performance_tied_to/
@@ -64,13 +72,24 @@ function fixture(x,y,f,color){
 */
 function square(x,y,color){
   sendSquare(x,y,color);
-  sendprint();
+  sendPrint();
+}
+
+/*
+  Send an unique Square and turn it on
+*/
+function side(s,color){
+  sendSide(s,color);
+  sendPrint();
 }
 
 /*
   Function used to send an entire Matrix update based on each squares 
 */
 function matrix(color) {
+  for(s = 1; s <= 4; s++){
+    sendSide(s,color);
+  }
   for(y = 1; y <= 8; y++){
     for(x = 1; x <= 8; x++){
       sendSquare(x,y,color);

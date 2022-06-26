@@ -15,16 +15,7 @@
       "localPort": 9001
     }
   },
-  "parameters": {
-    "Size X": {
-      "type": "Integer",
-      "default": 8
-    },
-    "Size Y": {
-      "type": "Integer",
-      "default": 8
-    }
-  },
+  "parameters": {},
   "scripts": [
     "matrice.js"
   ],
@@ -33,13 +24,8 @@
       "menu": "",
       "callback": "fixture",
       "parameters": {
-        "X": {
-          "type": "Integer",
-          "default": 1
-        },
-        "Y": {
-          "type": "Integer",
-          "default": 1
+        "XY": {
+          "type": "String"
         },
         "F": {
           "type": "Integer",
@@ -56,13 +42,8 @@
       "menu": "",
       "callback": "square",
       "parameters": {
-        "X": {
-          "type": "Integer",
-          "default": 1
-        },
-        "Y": {
-          "type": "Integer",
-          "default": 1
+        "XY": {
+          "type": "String"
         },
         "Couleur": {
           "type": "Color"
@@ -73,6 +54,21 @@
       "menu": "",
       "callback": "matrix",
       "parameters": {
+        "Couleur": {
+          "type": "Color"
+        }
+      }
+    },
+    "Tour": {
+      "menu": "",
+      "callback": "tour",
+      "parameters": {
+        "XY": {
+          "type": "String"
+        },
+        "Fixtures": {
+          "type": "String"
+        },
         "Couleur": {
           "type": "Color"
         }
@@ -95,30 +91,20 @@
       "menu": "",
       "callback": "intersection",
       "parameters": {
-        "X1": {
-          "type": "Integer",
-          "default": 1
+        "XY 1": {
+          "type": "String"
         },
-        "Y1": {
-          "type": "Integer",
-          "default": 1
-        },
-        "X2": {
-          "type": "Integer",
-          "default": 1
-        },
-        "Y2": {
-          "type": "Integer",
-          "default": 1
+        "XY 2": {
+          "type": "String"
         },
         "Couleur": {
           "type": "Color"
         }
       }
     },
-    "Spirale": {
+    "Zoom carré": {
       "menu": "",
-      "callback": "spirale",
+      "callback": "zoomsquare",
       "parameters": {
         "Taille": {
           "type": "Integer",

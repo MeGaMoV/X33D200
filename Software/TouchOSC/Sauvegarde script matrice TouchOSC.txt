@@ -16,15 +16,15 @@ function onReceiveOSC(msg)
   if(address:sub(0,8) == '/fixture') then
     local fixture = self:findByName(address)
     if exist(fixture) then
-      self:findByName(address).color = getColor(msg)
+      fixture.color = getColor(msg)
     end
   end
   
   -- Case of receiving a side of the Matrix
-  if(address:sub(0,5) == '/cote') then
-    local side = address:sub(0,7)
-    if exist(side) then
-      self:findByName(side).color = getColor(msg)
+  if(address:sub(0,5) == '/tour') then
+    local fixture = self:findByName(address)
+    if exist(fixture) then
+      fixture.color = getColor(msg)
     end
   end
   
@@ -33,10 +33,14 @@ function onReceiveOSC(msg)
     for y = 1, 8 do
       for x = 1, 8 do
         for f = 1, 8 do
-         local fixture = self:findByName("/fixture/" .. x .. "/" .. y .. "/".. f)
-         if exist(fixture) then
-          fixture.color = "000000FF"
-          end
+            local fixture = self:findByName("/fixture/" .. x .. "/" .. y .. "/".. f)
+            local fixture_tour = self:findByName("/tour/" .. x .. "/" .. y .. "/".. f)
+            if exist(fixture) then
+                fixture.color = "000000FF"
+            end
+            if exist(fixture_tour) then
+                fixture_tour.color = "000000FF"
+            end
         end
       end
     end

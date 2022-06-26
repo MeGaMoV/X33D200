@@ -20,19 +20,19 @@ function sendFixture(x,y,f,color) {
 }
 
 /*
+  Function used to send 1 update to 1 specific external "fixture" of a square
+*/
+function sendTour(x,y,f,color) {
+  color = colorFloatToInt(color);
+  local.send("/tour/"+x+"/"+y+"/"+f, color.r, color.g, color.b);
+}
+
+/*
   Function used to send 1 update to 1 entire square (8 fixtures)
 */
 function sendSquare(x,y,color) {
   color = colorFloatToInt(color);
   local.send("/carre/"+x+"/"+y, color.r, color.g, color.b);
-}
-
-/*
-  Function used to send 1 update to 1 "face" of the Matrix
-*/
-function sendSide(s,color) {
-  color = colorFloatToInt(color);
-  local.send("/cote/"+s+"", color.r, color.g, color.b);
 }
 
 /*
@@ -62,24 +62,31 @@ function sendIntensity(intensity){
 /*
   Send an unique Fixture and turn it on
 */
-function fixture(x,y,f,color){
-  sendFixture(x,y,f,color);
+function fixture(xy,f,color){
+  sendFixture(xy.substring(0, 1),xy.substring(1, 2),f,color);
   sendPrint();
 }
 
 /*
   Send an unique Square and turn it on
 */
-function square(x,y,color){
-  sendSquare(x,y,color);
+function square(xy,color){
+  sendSquare(xy.substring(0,1),xy.substring(1,2),color);
   sendPrint();
 }
 
 /*
   Send an unique Square and turn it on
 */
-function side(s,color){
-  sendSide(s,color);
+function tour(xy, fixtures, color){
+  x = xy.substring(0, 1);
+  y = xy.substring(1, 2);
+  f1 = fixtures.substring(0, 1);
+  f2 = fixtures.substring(1, 2);
+
+  sendTour(x,y,f1,color);
+  sendTour(x,y,f2,color);
+
   sendPrint();
 }
 
@@ -87,9 +94,21 @@ function side(s,color){
   Function used to send an entire Matrix update based on each squares 
 */
 function matrix(color) {
-  for(s = 1; s <= 4; s++){
-    sendSide(s,color);
+  //External tour of the Matrix
+  for(x = 1; x <= 8; x++){
+    sendTour(x,1,1,color);
+    sendTour(x,1,2,color);
+    sendTour(x,8,5,color);
+    sendTour(x,8,6,color);
   }
+  for(y = 1; y <= 8; y++){
+    sendTour(1,y,7,color);
+    sendTour(1,y,8,color);
+    sendTour(8,y,3,color);
+    sendTour(8,y,4,color);
+  }
+
+  //All squares
   for(y = 1; y <= 8; y++){
     for(x = 1; x <= 8; x++){
       sendSquare(x,y,color);
@@ -101,7 +120,7 @@ function matrix(color) {
 /*
   Function used to create a "spirale"
 */
-function spirale(taille, color){
+function zoomsquare(taille, color){
   if(taille == 4){
     xyMin = 1;
     xyMax = 8;
@@ -143,7 +162,12 @@ function spirale(taille, color){
 /*
   Send color to an intersection between 2 squares
 */
-function intersection(x1, y1, x2, y2, color){
+function intersection(xy1, xy2, color){
+  x1 = xy1.substring(0, 1);
+  y1 = xy1.substring(1, 2);
+  x2 = xy2.substring(0, 1);
+  y2 = xy2.substring(1, 2);
+
   if(x2 == x1){
     posX = "MID";
   } else {

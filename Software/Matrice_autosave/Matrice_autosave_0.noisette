@@ -245,8 +245,8 @@
         "parameters": [
           {
             "value": [
-              -179.0,
-              -189.0
+              -176.0,
+              -195.0
             ],
             "controlAddress": "/viewUIPosition"
           },
@@ -286,21 +286,26 @@
               "consequences": {
                 "items": [
                   {
-                    "niceName": "Envoyer Matrice",
+                    "niceName": "Envoyer Fixture",
                     "type": "Consequence",
                     "commandModule": "matriceOSC",
                     "commandPath": "",
-                    "commandType": "Matrice",
+                    "commandType": "Fixture",
                     "command": {
                       "parameters": [
                         {
-                          "value": [
-                            0.0,
-                            0.0,
-                            1.0,
-                            1.0
-                          ],
+                          "value": 1,
+                          "hexMode": false,
+                          "controlAddress": "/f"
+                        },
+                        {
+                          "value": "Rouge",
                           "controlAddress": "/couleur"
+                        },
+                        {
+                          "value": 100,
+                          "hexMode": false,
+                          "controlAddress": "/intensit"
                         }
                       ],
                       "paramLinks": {
@@ -316,13 +321,13 @@
                     "command": {
                       "parameters": [
                         {
-                          "value": [
-                            0.0,
-                            0.0,
-                            1.0,
-                            1.0
-                          ],
+                          "value": "Vert",
                           "controlAddress": "/couleur"
+                        },
+                        {
+                          "value": 100,
+                          "hexMode": false,
+                          "controlAddress": "/intensit"
                         }
                       ],
                       "paramLinks": {
@@ -330,30 +335,23 @@
                     }
                   },
                   {
-                    "niceName": "Envoyer Fixture",
+                    "niceName": "Envoyer Matrice",
                     "type": "Consequence",
                     "commandModule": "matriceOSC",
                     "commandPath": "",
-                    "commandType": "Fixture",
+                    "commandType": "Matrice",
                     "command": {
                       "parameters": [
                         {
-                          "value": 1,
+                          "value": "Bleu",
+                          "controlAddress": "/couleur"
+                        },
+                        {
+                          "value": 100,
                           "hexMode": false,
-                          "controlAddress": "/f"
+                          "controlAddress": "/intensit"
                         }
                       ],
-                      "paramLinks": {
-                      }
-                    }
-                  },
-                  {
-                    "niceName": "Nettoyer",
-                    "type": "Consequence",
-                    "commandModule": "matriceOSC",
-                    "commandPath": "",
-                    "commandType": "Nettoyer",
-                    "command": {
                       "paramLinks": {
                       }
                     }

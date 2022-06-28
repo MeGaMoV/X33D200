@@ -7,15 +7,18 @@ function init() {
   0.0 => 0 to 1.0 => 255
   This return RGB values
 */
-function colorFloatToInt(color){
-  return { r: Math.round(color[0] * 255), g : Math.round(color[1] * 255), b : Math.round(color[2] * 255)};
+function colorRVB(colorFromTxt, colorAccurate, intensity){
+  intensity = intensity / 100;
+  color = colorFromTxt;
+  //If we have black color, use the second choice of color (in case the other one have a color)
+  if(colorFromTxt[0] == 0.0 && colorFromTxt[1] == 0.0 && colorFromTxt[2] == 0.0) color = colorAccurate;
+  return { r: Math.round(color[0] * 255 * intensity), g : Math.round(color[1] * 255 * intensity), b : Math.round(color[2] * 255 * intensity)};
 }
 
 /*
   Function used to send 1 update to 1 specific fixture
 */
 function sendFixture(x,y,f,color) {
-  color = colorFloatToInt(color);
   local.send("/fixture/"+x+"/"+y+"/"+f, color.r, color.g, color.b);
 }
 
@@ -23,7 +26,6 @@ function sendFixture(x,y,f,color) {
   Function used to send 1 update to 1 specific external "fixture" of a square
 */
 function sendTour(x,y,f,color) {
-  color = colorFloatToInt(color);
   local.send("/tour/"+x+"/"+y+"/"+f, color.r, color.g, color.b);
 }
 
@@ -31,7 +33,6 @@ function sendTour(x,y,f,color) {
   Function used to send 1 update to 1 entire square (8 fixtures)
 */
 function sendSquare(x,y,color) {
-  color = colorFloatToInt(color);
   local.send("/carre/"+x+"/"+y, color.r, color.g, color.b);
 }
 
@@ -62,7 +63,8 @@ function sendIntensity(intensity){
 /*
   Send an unique Fixture and turn it on
 */
-function fixture(xy,f,color){
+function fixture(xy,f, colorFromTxt, colorAccurate, intensity){
+  color = colorRVB(colorFromTxt, colorAccurate, intensity);
   sendFixture(xy.substring(0, 1),xy.substring(1, 2),f,color);
   sendPrint();
 }
@@ -70,15 +72,17 @@ function fixture(xy,f,color){
 /*
   Send an unique Square and turn it on
 */
-function square(xy,color){
+function square(xy, colorFromTxt, colorAccurate, intensity){
+  color = colorRVB(colorFromTxt, colorAccurate, intensity);
   sendSquare(xy.substring(0,1),xy.substring(1,2),color);
   sendPrint();
 }
 
 /*
-  Send an unique Square and turn it on
+  Send 2 square fixture's at edge of the Matrix and turn it on
 */
-function tour(xy, fixtures, color){
+function bord(xy, fixtures, colorFromTxt, colorAccurate, intensity){
+  color = colorRVB(colorFromTxt, colorAccurate, intensity);
   x = xy.substring(0, 1);
   y = xy.substring(1, 2);
   f1 = fixtures.substring(0, 1);
@@ -91,9 +95,48 @@ function tour(xy, fixtures, color){
 }
 
 /*
+  Send an entire edge of the Matrix
+*/
+function frame(frame, colorFromTxt, colorAccurate, intensity){
+  color = colorRVB(colorFromTxt, colorAccurate, intensity);
+
+  if(frame == 1){
+    for(x = 1; x <= 8; x++){
+      sendTour(x,1,1,color);
+      sendTour(x,1,2,color);
+    }
+  }
+
+  if(frame == 2){
+    for(y = 1; y <= 8; y++){
+      sendTour(8,y,3,color);
+      sendTour(8,y,4,color);
+    }
+  }
+
+  if(frame == 3){
+    for(x = 1; x <= 8; x++){
+      sendTour(x,8,5,color);
+      sendTour(x,8,6,color);
+    }
+  }
+
+  if(frame == 4){
+    for(y = 1; y <= 8; y++){
+      sendTour(1,y,7,color);
+      sendTour(1,y,8,color);
+    }
+  }
+
+  sendPrint();
+}
+
+/*
   Function used to send an entire Matrix update based on each squares 
 */
-function matrix(color) {
+function matrix(colorFromTxt, colorAccurate, intensity) {
+  color = colorRVB(colorFromTxt, colorAccurate, intensity);
+
   //External tour of the Matrix
   for(x = 1; x <= 8; x++){
     sendTour(x,1,1,color);
@@ -120,7 +163,9 @@ function matrix(color) {
 /*
   Function used to create a "spirale"
 */
-function zoomsquare(taille, color){
+function zoomsquare(taille, colorFromTxt, colorAccurate, intensity){
+  color = colorRVB(colorFromTxt, colorAccurate, intensity);
+
   if(taille == 4){
     xyMin = 1;
     xyMax = 8;
@@ -162,7 +207,9 @@ function zoomsquare(taille, color){
 /*
   Send color to an intersection between 2 squares
 */
-function intersection(xy1, xy2, color){
+function intersection(xy1, xy2, colorFromTxt, colorAccurate, intensity){
+  color = colorRVB(colorFromTxt, colorAccurate, intensity);
+
   x1 = xy1.substring(0, 1);
   y1 = xy1.substring(1, 2);
   x2 = xy2.substring(0, 1);

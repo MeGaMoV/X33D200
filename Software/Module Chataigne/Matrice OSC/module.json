@@ -2,13 +2,13 @@
   "name": "Matrice OSC",
   "type": "OSC",
   "path": "Hardware",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Controle Matrice X33D200",
   "url": "https://github.com/tommag/Sample-Chataigne-module",
   "downloadURL": "https://github.com/tommag/Sample-Chataigne-module/archive/master.zip",
   "hasInput": true,
   "hasOutput": true,
-  "hideDefaultCommands": false,
+  "hideDefaultCommands": true,
   "defaults": {
     "autoAdd": false,
     "oscInput": {
@@ -34,7 +34,88 @@
           "default": 1
         },
         "Couleur": {
+          "type": "Enum",
+          "options": {
+            "Noir": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "Rouge": [
+              1.0,
+              0.0,
+              0.0
+            ],
+            "Vert": [
+              0.0,
+              0.5,
+              0.0
+            ],
+            "Bleu": [
+              0.0,
+              0.0,
+              1.0
+            ],
+            "Cyan": [
+              0.0,
+              1.0,
+              1.0
+            ],
+            "Vert citron": [
+              0.0,
+              1.0,
+              0.0
+            ],
+            "Bleu Foncé": [
+              0.0,
+              0.0,
+              0.54
+            ],
+            "Violet": [
+              0.5,
+              0.0,
+              0.5
+            ],
+            "Magenta": [
+              1.0,
+              0.0,
+              1.0
+            ],
+            "Jaune": [
+              1.0,
+              1.0,
+              0.0
+            ],
+            "Orange": [
+              1.0,
+              0.65,
+              0.0
+            ],
+            "Marron": [
+              0.65,
+              0.16,
+              0.16
+            ],
+            "Gris": [
+              0.5,
+              0.5,
+              0.5
+            ],
+            "Blanc": [
+              1.0,
+              1.0,
+              1.0
+            ]
+          }
+        },
+        "Couleur precis": {
           "type": "Color"
+        },
+        "Intensité": {
+          "type": "Integer",
+          "min": 1,
+          "max": 100,
+          "default": 100
         }
       }
     },
@@ -46,7 +127,88 @@
           "type": "String"
         },
         "Couleur": {
+          "type": "Enum",
+          "options": {
+            "Noir": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "Rouge": [
+              1.0,
+              0.0,
+              0.0
+            ],
+            "Vert": [
+              0.0,
+              0.5,
+              0.0
+            ],
+            "Bleu": [
+              0.0,
+              0.0,
+              1.0
+            ],
+            "Cyan": [
+              0.0,
+              1.0,
+              1.0
+            ],
+            "Vert citron": [
+              0.0,
+              1.0,
+              0.0
+            ],
+            "Bleu Foncé": [
+              0.0,
+              0.0,
+              0.54
+            ],
+            "Violet": [
+              0.5,
+              0.0,
+              0.5
+            ],
+            "Magenta": [
+              1.0,
+              0.0,
+              1.0
+            ],
+            "Jaune": [
+              1.0,
+              1.0,
+              0.0
+            ],
+            "Orange": [
+              1.0,
+              0.65,
+              0.0
+            ],
+            "Marron": [
+              0.65,
+              0.16,
+              0.16
+            ],
+            "Gris": [
+              0.5,
+              0.5,
+              0.5
+            ],
+            "Blanc": [
+              1.0,
+              1.0,
+              1.0
+            ]
+          }
+        },
+        "Couleur precis": {
           "type": "Color"
+        },
+        "Intensité": {
+          "type": "Integer",
+          "min": 1,
+          "max": 100,
+          "default": 100
         }
       }
     },
@@ -55,13 +217,94 @@
       "callback": "matrix",
       "parameters": {
         "Couleur": {
+          "type": "Enum",
+          "options": {
+            "Noir": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "Rouge": [
+              1.0,
+              0.0,
+              0.0
+            ],
+            "Vert": [
+              0.0,
+              0.5,
+              0.0
+            ],
+            "Bleu": [
+              0.0,
+              0.0,
+              1.0
+            ],
+            "Cyan": [
+              0.0,
+              1.0,
+              1.0
+            ],
+            "Vert citron": [
+              0.0,
+              1.0,
+              0.0
+            ],
+            "Bleu Foncé": [
+              0.0,
+              0.0,
+              0.54
+            ],
+            "Violet": [
+              0.5,
+              0.0,
+              0.5
+            ],
+            "Magenta": [
+              1.0,
+              0.0,
+              1.0
+            ],
+            "Jaune": [
+              1.0,
+              1.0,
+              0.0
+            ],
+            "Orange": [
+              1.0,
+              0.65,
+              0.0
+            ],
+            "Marron": [
+              0.65,
+              0.16,
+              0.16
+            ],
+            "Gris": [
+              0.5,
+              0.5,
+              0.5
+            ],
+            "Blanc": [
+              1.0,
+              1.0,
+              1.0
+            ]
+          }
+        },
+        "Couleur precis": {
           "type": "Color"
+        },
+        "Intensité": {
+          "type": "Integer",
+          "min": 1,
+          "max": 100,
+          "default": 100
         }
       }
     },
-    "Tour": {
+    "Matrice (Coté Carré)" : {
       "menu": "",
-      "callback": "tour",
+      "callback": "bord",
       "parameters": {
         "XY": {
           "type": "String"
@@ -70,20 +313,184 @@
           "type": "String"
         },
         "Couleur": {
+          "type": "Enum",
+          "options": {
+            "Noir": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "Rouge": [
+              1.0,
+              0.0,
+              0.0
+            ],
+            "Vert": [
+              0.0,
+              0.5,
+              0.0
+            ],
+            "Bleu": [
+              0.0,
+              0.0,
+              1.0
+            ],
+            "Cyan": [
+              0.0,
+              1.0,
+              1.0
+            ],
+            "Vert citron": [
+              0.0,
+              1.0,
+              0.0
+            ],
+            "Bleu Foncé": [
+              0.0,
+              0.0,
+              0.54
+            ],
+            "Violet": [
+              0.5,
+              0.0,
+              0.5
+            ],
+            "Magenta": [
+              1.0,
+              0.0,
+              1.0
+            ],
+            "Jaune": [
+              1.0,
+              1.0,
+              0.0
+            ],
+            "Orange": [
+              1.0,
+              0.65,
+              0.0
+            ],
+            "Marron": [
+              0.65,
+              0.16,
+              0.16
+            ],
+            "Gris": [
+              0.5,
+              0.5,
+              0.5
+            ],
+            "Blanc": [
+              1.0,
+              1.0,
+              1.0
+            ]
+          }
+        },
+        "Couleur precis": {
           "type": "Color"
+        },
+        "Intensité": {
+          "type": "Integer",
+          "min": 1,
+          "max": 100,
+          "default": 100
         }
       }
     },
-    "Côté": {
+    "Matrice (Cadre)": {
       "menu": "",
-      "callback": "side",
+      "callback": "frame",
       "parameters": {
         "Côté": {
           "type": "Integer",
+          "min": 1,
+          "max": 4,
           "default": 1
         },
         "Couleur": {
+          "type": "Enum",
+          "options": {
+            "Noir": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "Rouge": [
+              1.0,
+              0.0,
+              0.0
+            ],
+            "Vert": [
+              0.0,
+              0.5,
+              0.0
+            ],
+            "Bleu": [
+              0.0,
+              0.0,
+              1.0
+            ],
+            "Cyan": [
+              0.0,
+              1.0,
+              1.0
+            ],
+            "Vert citron": [
+              0.0,
+              1.0,
+              0.0
+            ],
+            "Bleu Foncé": [
+              0.0,
+              0.0,
+              0.54
+            ],
+            "Violet": [
+              0.5,
+              0.0,
+              0.5
+            ],
+            "Magenta": [
+              1.0,
+              0.0,
+              1.0
+            ],
+            "Jaune": [
+              1.0,
+              1.0,
+              0.0
+            ],
+            "Orange": [
+              1.0,
+              0.65,
+              0.0
+            ],
+            "Marron": [
+              0.65,
+              0.16,
+              0.16
+            ],
+            "Gris": [
+              0.5,
+              0.5,
+              0.5
+            ],
+            "Blanc": [
+              1.0,
+              1.0,
+              1.0
+            ]
+          }
+        },
+        "Couleur precis": {
           "type": "Color"
+        },
+        "Intensité": {
+          "type": "Integer",
+          "min": 1,
+          "max": 100,
+          "default": 100
         }
       }
     },
@@ -98,11 +505,92 @@
           "type": "String"
         },
         "Couleur": {
+          "type": "Enum",
+          "options": {
+            "Noir": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "Rouge": [
+              1.0,
+              0.0,
+              0.0
+            ],
+            "Vert": [
+              0.0,
+              0.5,
+              0.0
+            ],
+            "Bleu": [
+              0.0,
+              0.0,
+              1.0
+            ],
+            "Cyan": [
+              0.0,
+              1.0,
+              1.0
+            ],
+            "Vert citron": [
+              0.0,
+              1.0,
+              0.0
+            ],
+            "Bleu Foncé": [
+              0.0,
+              0.0,
+              0.54
+            ],
+            "Violet": [
+              0.5,
+              0.0,
+              0.5
+            ],
+            "Magenta": [
+              1.0,
+              0.0,
+              1.0
+            ],
+            "Jaune": [
+              1.0,
+              1.0,
+              0.0
+            ],
+            "Orange": [
+              1.0,
+              0.65,
+              0.0
+            ],
+            "Marron": [
+              0.65,
+              0.16,
+              0.16
+            ],
+            "Gris": [
+              0.5,
+              0.5,
+              0.5
+            ],
+            "Blanc": [
+              1.0,
+              1.0,
+              1.0
+            ]
+          }
+        },
+        "Couleur precis": {
           "type": "Color"
+        },
+        "Intensité": {
+          "type": "Integer",
+          "min": 1,
+          "max": 100,
+          "default": 100
         }
       }
     },
-    "Zoom carré": {
+    "Effet Zoom carré": {
       "menu": "",
       "callback": "zoomsquare",
       "parameters": {
@@ -113,17 +601,97 @@
           "default": 4
         },
         "Couleur": {
+          "type": "Enum",
+          "options": {
+            "Noir": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "Rouge": [
+              1.0,
+              0.0,
+              0.0
+            ],
+            "Vert": [
+              0.0,
+              0.5,
+              0.0
+            ],
+            "Bleu": [
+              0.0,
+              0.0,
+              1.0
+            ],
+            "Cyan": [
+              0.0,
+              1.0,
+              1.0
+            ],
+            "Vert citron": [
+              0.0,
+              1.0,
+              0.0
+            ],
+            "Bleu Foncé": [
+              0.0,
+              0.0,
+              0.54
+            ],
+            "Violet": [
+              0.5,
+              0.0,
+              0.5
+            ],
+            "Magenta": [
+              1.0,
+              0.0,
+              1.0
+            ],
+            "Jaune": [
+              1.0,
+              1.0,
+              0.0
+            ],
+            "Orange": [
+              1.0,
+              0.65,
+              0.0
+            ],
+            "Marron": [
+              0.65,
+              0.16,
+              0.16
+            ],
+            "Gris": [
+              0.5,
+              0.5,
+              0.5
+            ],
+            "Blanc": [
+              1.0,
+              1.0,
+              1.0
+            ]
+          }
+        },
+        "Couleur precis": {
           "type": "Color"
+        },
+        "Intensité": {
+          "type": "Integer",
+          "min": 1,
+          "max": 100,
+          "default": 100
         }
       }
     },
-    "Nettoyer": {
+    "Action Nettoyer": {
       "menu": "",
       "callback": "sendClear",
-      "parameters": {
-      }
+      "parameters": {}
     },
-    "Intensité": {
+    "Action Intensité": {
       "menu": "",
       "callback": "sendIntensity",
       "parameters": {

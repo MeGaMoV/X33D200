@@ -212,6 +212,111 @@
         }
       }
     },
+    "Carré (Côté)": {
+      "menu": "",
+      "callback": "squarebord",
+      "parameters": {
+        "XY": {
+          "type": "String"
+        },
+        "Fixtures": {
+          "type": "Enum",
+          "options": {
+            "12": "12",
+            "23": "23",
+            "34": "34",
+            "45": "45",
+            "56": "56",
+            "67": "67",
+            "78": "78"
+          }
+        },
+        "Couleur": {
+          "type": "Enum",
+          "options": {
+            "Noir": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "Rouge": [
+              1.0,
+              0.0,
+              0.0
+            ],
+            "Vert": [
+              0.0,
+              0.5,
+              0.0
+            ],
+            "Bleu": [
+              0.0,
+              0.0,
+              1.0
+            ],
+            "Cyan": [
+              0.0,
+              1.0,
+              1.0
+            ],
+            "Vert citron": [
+              0.0,
+              1.0,
+              0.0
+            ],
+            "Bleu Foncé": [
+              0.0,
+              0.0,
+              0.54
+            ],
+            "Violet": [
+              0.5,
+              0.0,
+              0.5
+            ],
+            "Magenta": [
+              1.0,
+              0.0,
+              1.0
+            ],
+            "Jaune": [
+              1.0,
+              1.0,
+              0.0
+            ],
+            "Orange": [
+              1.0,
+              0.65,
+              0.0
+            ],
+            "Marron": [
+              0.65,
+              0.16,
+              0.16
+            ],
+            "Gris": [
+              0.5,
+              0.5,
+              0.5
+            ],
+            "Blanc": [
+              1.0,
+              1.0,
+              1.0
+            ]
+          }
+        },
+        "Couleur precis": {
+          "type": "Color"
+        },
+        "Intensité": {
+          "type": "Integer",
+          "min": 1,
+          "max": 100,
+          "default": 100
+        }
+      }
+    },
     "Matrice": {
       "menu": "",
       "callback": "matrix",
@@ -310,7 +415,16 @@
           "type": "String"
         },
         "Fixtures": {
-          "type": "String"
+          "type": "Enum",
+          "options": {
+            "12": "12",
+            "23": "23",
+            "34": "34",
+            "45": "45",
+            "56": "56",
+            "67": "67",
+            "78": "78"
+          }
         },
         "Couleur": {
           "type": "Enum",
@@ -407,6 +521,114 @@
           "min": 1,
           "max": 4,
           "default": 1
+        },
+        "Couleur": {
+          "type": "Enum",
+          "options": {
+            "Noir": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "Rouge": [
+              1.0,
+              0.0,
+              0.0
+            ],
+            "Vert": [
+              0.0,
+              0.5,
+              0.0
+            ],
+            "Bleu": [
+              0.0,
+              0.0,
+              1.0
+            ],
+            "Cyan": [
+              0.0,
+              1.0,
+              1.0
+            ],
+            "Vert citron": [
+              0.0,
+              1.0,
+              0.0
+            ],
+            "Bleu Foncé": [
+              0.0,
+              0.0,
+              0.54
+            ],
+            "Violet": [
+              0.5,
+              0.0,
+              0.5
+            ],
+            "Magenta": [
+              1.0,
+              0.0,
+              1.0
+            ],
+            "Jaune": [
+              1.0,
+              1.0,
+              0.0
+            ],
+            "Orange": [
+              1.0,
+              0.65,
+              0.0
+            ],
+            "Marron": [
+              0.65,
+              0.16,
+              0.16
+            ],
+            "Gris": [
+              0.5,
+              0.5,
+              0.5
+            ],
+            "Blanc": [
+              1.0,
+              1.0,
+              1.0
+            ]
+          }
+        },
+        "Couleur precis": {
+          "type": "Color"
+        },
+        "Intensité": {
+          "type": "Integer",
+          "min": 1,
+          "max": 100,
+          "default": 100
+        }
+      }
+    },
+    "Mur": {
+      "menu": "",
+      "callback": "wall",
+      "parameters": {
+        "XY 1": {
+          "type": "String"
+        },
+        "XY 2": {
+          "type": "String"
+        },
+        "Fixtures": {
+          "type": "Enum",
+          "options": {
+            "12": "12",
+            "23": "23",
+            "34": "34",
+            "45": "45",
+            "56": "56",
+            "67": "67",
+            "78": "78"
+          }
         },
         "Couleur": {
           "type": "Enum",
